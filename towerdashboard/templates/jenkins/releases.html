@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<br/>
+<ul class="nav nav-tabs">
+{% for version in versions %}
+  <li class="nav-item">
+    <a class="nav-link {% if loop.index == 1 %}active{% endif %}" data-toggle="tab" href="#release{{ version.id }}">{{ version.version }}</a>
+  </li>
+{% endfor %}
+</ul>
+
+
+<div class="tab-content">
+{% for version in versions %}
+  <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="release{{ version.id }}">
+    <hr/>
+    <h4>{{ version.version }}</h4>
+    {% if version.version != 'In Development' %}Next Release: {{ version.next_release }}{% endif %}
+    <hr/><br/>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">General Availability</th>
+          <th scope="col">End of Full Support</th>
+          <th scope="col">End of Maintenace Support 1</th>
+          <th scope="col">End of Life</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>{{ version.general_availability }}</th>
+          <td>{{ version.end_of_full_support }}</td>
+          <td>{{ version.end_of_maintenance_support }}</td>
+          <td>{{ version.end_of_life }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br/><br/>
+    <h4>Integration Results</h4>
+    <hr/><br/>
+
+    <table class="table table-bordered">
+        <thead align="center">
+          <th scope="col"></th>
+          <th scope="col">stable-2.7</th>
+          <th scope="col">stable-2.6</th>
+          <th scope="col">stable-2.5</th>
+          <th scope="col">stable-2.4</th>
+          <th scope="col">stable-2.3</th>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            {% if result.id == version.id %}
+
+              {% if loop.index == 1 or result.ansible == 'stable-2.7'%}
+              <tr>
+              <th scope="row">{{ result.os_description }}</th>
+              {% endif %}
+
+              {% if result.status == 'SUCCESS' %}
+                <td align="center"><a href="{{ result.url }}"><img src="{{ url_for('static', filename='green.png') }}"></img></a></td>
+              {% elif result.status == 'FAILURE' %}
+                <td align="center"><a href="{{ result.url }}"><img src="{{ url_for('static', filename='red.png') }}"></img></a></td>
+              {% else %}
+                <td align="center"><a href="{{ result.url }}"><img src="{{ url_for('static', filename='grey.png') }}"></img></a></td>
+              {% endif %}
+
+              {% if result.ansible == 'stable-2.3' and not loop.last %}
+              </tr>
+              {% endif %}
+
+
+            {% endif %}
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+
+  </div>
+{% endfor %}
+</div>
+
+{% endblock %}

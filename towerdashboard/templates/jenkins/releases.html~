@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<ul class="nav nav-tabs">
+{% for version in versions %}
+  <li class="nav-item">
+    <a class="nav-link {% if loop.index == 1 %}active{% endif %}" data-toggle="tab" href="#release{{ version.id }}">{{ version.version }}</a>
+  </li>
+{% endfor %}
+</ul>
+
+
+<div class="tab-content">
+{% for version in versions %}
+  <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="release{{ version.id }}">
+    <hr/>
+    <h4>{{ version.version }}</h4>
+    <!-- {% if version.version != 'In Development' %}Next Release: {{ version.next_release }}{% endif %} -->
+    <hr/><br/>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">General Availability</th>
+          <th scope="col">End of Full Support</th>
+          <th scope="col">End of Maintenace Support 1</th>
+          <th scope="col">End of Life</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>{{ version.general_availability }}</th>
+          <td>{{ version.end_of_full_support }}</td>
+          <td>{{ version.end_of_maintenance_support }}</td>
+          <td>{{ version.end_of_life }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br/><br/>
+    <h4>Integration Results</h4>
+    <hr/><br/>
+
+    <table class="table">
+        <thead>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            {% if result.id == version.id %}
+
+            {% if loop.index == 1 %}
+            <tr>
+            {% elif current_os != result.os %}
+            </tr>
+            <tr/>
+            {% endif %}
+              <td>{{ result.os }} - {{ current_os }}</td>
+            {% set current_os = 12 %}
+
+            {% endif %}
+            {% endfor %}
+            </tr>
+            <!--
+
+Release 3.3|stable-2.7|rhel-7.6-x86_64|SUCCESS|2018-11-03 20:24:04
+Release 3.3|stable-2.6|rhel-7.6-x86_64||
+Release 3.3|stable-2.5|rhel-7.6-x86_64||
+Release 3.3|stable-2.4|rhel-7.6-x86_64||
+Release 3.3|stable-2.3|rhel-7.6-x86_64||
+Release 3.3|stable-2.7|rhel-7.5-x86_64||     
+Release 3.3|stable-2.6|rhel-7.5-x86_64|SUCCESS|2018-11-03 20:24:04
+Release 3.3|stable-2.5|rhel-7.5-x86_64||     
+Release 3.3|stable-2.4|rhel-7.5-x86_64||     
+Release 3.3|stable-2.3|rhel-7.5-x86_64||     
+Release 3.3|stable-2.7|rhel-7.4-x86_64||
+Release 3.3|stable-2.6|rhel-7.4-x86_64||
+-->
+        </tbody>
+    </table>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">stable-2.7</th>
+          <th scope="col">stable-2.6</th>
+          <th scope="col">stable-2.5</th>
+          <th scope="col">stable-2.4</th>
+          <th scope="col">stable-2.3</th>
+        </tr>
+      </thead>
+     <tbody>
+       <tr>
+         <th scope="row">REHL 7.6</th>
+         <td>Mark</td>
+         <td>Otto</td>
+         <td>@mdo</td>
+         <td>@mdo</td>
+         <td>@mdo</td>
+       </tr>
+       <tr>
+         <th scope="row">RHEL 7.5</th>
+         <td>Jacob</td>
+         <td>Thornton</td>
+         <td>@fat</td>
+         <td>@mdo</td>
+         <td>@mdo</td>
+       </tr>
+       <tr>
+         <th scope="row">RHEL 7.4</th>
+         <td>Larry</td>
+         <td>the Bird</td>
+         <td>@twitter</td>
+         <td>@mdo</td>
+         <td>@mdo</td>
+       </tr>
+       <tr>
+         <th scope="row">Oracle Linux 7.5</th>
+         <td>Larry</td>
+         <td>the Bird</td>
+         <td>@twitter</td>
+         <td>@mdo</td>
+         <td>@mdo</td>
+       </tr>
+       <tr>
+         <th scope="row">Ubuntu 14.04</th>
+         <td>Larry</td>
+         <td>the Bird</td>
+         <td>@twitter</td>
+         <td>@mdo</td>
+         <td>@mdo</td>
+       </tr>
+       <tr>
+         <th scope="row">Ubuntu 16.04</th>
+         <td>Larry</td>
+         <td>the Bird</td>
+         <td>@twitter</td>
+         <td>@mdo</td>
+         <td>@mdo</td>
+       </tr>
+     </tbody>
+</table>
+
+  </div>
+{% endfor %}
+</div>
+
+{% endblock %}
