@@ -94,6 +94,19 @@ def results():
     )
 
 
+def retrieve_test_plan_url(version):
+    url = 'https://api.github.com/repos/%s/contents/docs/test_plans/release_validation/testplan-%s.md' % (current_app.config.get('TOWERQA_REPO'), version)
+
+    res = requests.get(
+        url,
+        headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
+    )
+
+    if res.status_code == 200:
+        return 'https://github.com/%s/blob/devel/docs/test_plans/release_validation/testplan-%s.md' % (current_app.config.get('TOWERQA_REPO'), version)
+    return None
+
+
 @jenkins.route('/releases', strict_slashes=False)
 def releases():
     db_access = db.get_db()
@@ -106,8 +119,9 @@ def releases():
     results = db_access.execute(results_query).fetchall()
     results = db.format_fetchall(results)
 
+    url = 'https://api.github.com/repos/%s/branches' % current_app.config.get('TOWERQA_REPO')
     branches = requests.get(
-        current_app.config.get('TOWERQA_URL'),
+        url,
         headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
     ).json()
     res = [branch['name'] for branch in branches]
@@ -125,5 +139,6 @@ def releases():
             _res.sort()
             version['next_release'] = _res[-1]
             version['next_release'] = version['next_release'].replace('release_', '')
+            version['next_release_test_plan'] = retrieve_test_plan_url(version['next_release'])
 
     return flask.render_template('jenkins/releases.html', versions=versions, results=results)

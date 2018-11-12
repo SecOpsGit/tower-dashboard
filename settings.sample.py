@@ -24,5 +24,5 @@
 # GITHUB_TOKEN =
 
 
-# URL of the Ansible TowerQA repo
-# TOWERQA_URL =
+# Github name of the Tower QE team repo
+# TOWERQA_REPO =

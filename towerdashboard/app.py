@@ -29,8 +29,8 @@ def create_app():
         app.config.from_envvar('TOWERDASHBOARD_SETTINGS')
     if not app.config.get('GITHUB_TOKEN'):
         raise RuntimeError('GITHUB_TOKEN setting must be specified')
-    if not app.config.get('TOWERQA_URL'):
-        raise RuntimeError('TOWERQA_URL setting must be specified')
+    if not app.config.get('TOWERQA_REPO'):
+        raise RuntimeError('TOWERQA_REPO setting must be specified')
 
     app.register_blueprint(jenkins)
     db.init_app(app)

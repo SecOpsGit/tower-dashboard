@@ -18,7 +18,14 @@
   <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="release{{ version.id }}">
     <hr/>
     <h4>{{ version.version }}</h4>
-    {% if version.version != 'In Development' %}Next Release: {{ version.next_release }}{% endif %}
+    {% if version.version != 'In Development' %}
+    Next Release: {{ version.next_release }} -
+    {% if version.next_release_test_plan %}
+        <a href="{{ version.next_release_test_plan }}">Test Plan</a>
+    {% else %}
+        No Test Plan available yet
+    {% endif %}
+    {% endif %}
     <hr/><br/>
 
     <table class="table table-bordered">
