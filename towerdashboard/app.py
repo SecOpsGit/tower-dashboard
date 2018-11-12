@@ -17,6 +17,7 @@
 
 import flask
 import json
+import os
 
 from towerdashboard import db
 from towerdashboard.jenkins import jenkins
@@ -24,6 +25,13 @@ from towerdashboard.jenkins import jenkins
 
 def create_app():
     app = flask.Flask(__name__)
+    if os.environ.get('TOWERDASHBOARD_SETTINGS'):
+        app.config.from_envvar('TOWERDASHBOARD_SETTINGS')
+    if not app.config.get('GITHUB_TOKEN'):
+        raise RuntimeError('GITHUB_TOKEN setting must be specified')
+    if not app.config.get('TOWERQA_URL'):
+        raise RuntimeError('TOWERQA_URL setting must be specified')
+
     app.register_blueprint(jenkins)
     db.init_app(app)
 

@@ -19,6 +19,7 @@ import flask
 import json
 import requests
 
+from flask import current_app
 from towerdashboard import db
 from towerdashboard.jenkins import jenkins
 
@@ -98,7 +99,14 @@ def releases():
     results = db_access.execute(results_query).fetchall()
     results = db.format_fetchall(results)
 
-    branches = requests.get(TOWER_QA_URL, headers={'Authorization': 'token %s' % GH_TOKEN}).json()
+
+    print(current_app.config.get('TOWERQA_URL'))
+    print(current_app.config.get('GITHUB_TOKEN'))
+
+    branches = requests.get(
+        current_app.config.get('TOWERQA_URL'),
+        headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
+    ).json()
     res = [branch['name'] for branch in branches]
 
     for version in versions:

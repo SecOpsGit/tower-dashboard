@@ -35,6 +35,8 @@ OS_VERSIONS = [
     {'name': 'ubuntu-14.04-x86_64', 'desc': 'Ubuntu 14.04', 'family': 'Ubuntu'},  # noqa
 ]
 
+# Taken from: https://access.redhat.com/support/policy/updates/ansible-tower
+#
 TOWER_VERSIONS = [
     {'name': 'In Development', 'general_availability': None, 'end_of_full_support': None, 'end_of_maintenance_support': None, 'end_of_life': None},
     {'name': 'Release 3.3', 'general_availability': '2018-09-12', 'end_of_full_support': '2019-03-12', 'end_of_maintenance_support': '2019-09-12', 'end_of_life': '2020-03-12'},
