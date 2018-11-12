@@ -75,6 +75,12 @@ def results():
     os_query = 'SELECT id FROM os_versions WHERE version = "%s"' % payload['os']
 
     db_access = db.get_db()
+
+    db_access.execute(
+        'DELETE FROM results WHERE tower_id = (%s) AND ansible_id = (%s) AND os_id = (%s)' % (tower_query, ansible_query, os_query)
+    )
+    db_access.commit()
+
     db_access.execute(
         'INSERT INTO results (tower_id, ansible_id, os_id, status, url) VALUES ((%s), (%s), (%s), "%s", "%s")' % (tower_query, ansible_query, os_query, payload['status'], payload['url'])
     )
