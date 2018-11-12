@@ -19,6 +19,7 @@ import flask
 import json
 import requests
 
+from datetime import datetime
 from flask import current_app
 from towerdashboard import db
 from towerdashboard.jenkins import jenkins
@@ -110,6 +111,12 @@ def releases():
         headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
     ).json()
     res = [branch['name'] for branch in branches]
+
+    now = datetime.now()
+    for result in results:
+        if result['res_created_at']:
+            delta = now - datetime.strptime(result['res_created_at'], '%Y-%m-%d %H:%M:%S')
+            result['freshness'] = delta.days
 
     for version in versions:
         if 'devel' not in version['version'].lower():

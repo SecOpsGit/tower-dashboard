@@ -42,8 +42,11 @@
 
     <br/><br/>
     <h4>Integration Results</h4>
-    <hr/><br/>
+    <hr/>
 
+    <img src="{{ url_for('static', filename='green.png') }}"></img><img src="{{ url_for('static', filename='red.png') }}"></img> Fresh results (Less than 2 days)
+    <img style="opacity: 0.5;" src="{{ url_for('static', filename='green.png') }}"></img><img style="opacity: 0.5;" src="{{ url_for('static', filename='red.png') }}"></img> Non fresh results (older than 2 days)
+    <img src="{{ url_for('static', filename='grey.png') }}"></img> Never run yet
     <table class="table table-bordered">
         <thead align="center">
           <th scope="col"></th>
@@ -63,11 +66,25 @@
               {% endif %}
 
               {% if result.status == 'SUCCESS' %}
+                {% if result.freshness < 2 %}
                 <td align="center"><a href="{{ result.url }}"><img src="{{ url_for('static', filename='green.png') }}"></img></a></td>
+                {% else %}
+                <td align="center"><a href="{{ result.url }}"><img style="opacity: 0.5" src="{{ url_for('static', filename='green.png') }}"></img></a></td>
+                {% endif %}
               {% elif result.status == 'FAILURE' %}
+                {% if result.freshness < 2 %}
                 <td align="center"><a href="{{ result.url }}"><img src="{{ url_for('static', filename='red.png') }}"></img></a></td>
+                {% else %}
+                <td align="center"><a href="{{ result.url }}"><img style="opacity: 0.5" src="{{ url_for('static', filename='red.png') }}"></img></a></td>
+                {% endif %}
               {% else %}
-                <td align="center"><a href="{{ result.url }}"><img src="{{ url_for('static', filename='grey.png') }}"></img></a></td>
+                <td align="center">
+                {% if result.url %}
+                    <a href="{{ result.url }}"><img src="{{ url_for('static', filename='grey.png') }}"></img></a>
+                {% else %}
+                    <img src="{{ url_for('static', filename='grey.png') }}"></img>
+                {% endif %}
+                </td>
               {% endif %}
 
               {% if result.ansible == 'stable-2.3' and not loop.last %}
