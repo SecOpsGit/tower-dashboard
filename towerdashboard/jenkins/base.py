@@ -99,10 +99,6 @@ def releases():
     results = db_access.execute(results_query).fetchall()
     results = db.format_fetchall(results)
 
-
-    print(current_app.config.get('TOWERQA_URL'))
-    print(current_app.config.get('GITHUB_TOKEN'))
-
     branches = requests.get(
         current_app.config.get('TOWERQA_URL'),
         headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
