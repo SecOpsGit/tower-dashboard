@@ -29,12 +29,22 @@ Ansible Tower QE related.
 
 %install
 %py2_install
+install -d %{buildroot}/%{_datarootdir}/tower-dashboard
+install -d %{buildroot}/%{_sysconfdir}/tower-dashboard
+%{__ln_s} %{python2_sitelib}/towerdashboard/wsgi.py %{buildroot}/%{_datarootdir}/tower-dashboard/wsgi.py
+cp ./towerdashboard/settings/settings.py %{buildroot}/%{_sysconfdir}/tower-dashboard/
+rm %{buildroot}/%{python2_sitelib}/towerdashboard/settings/settings.py
+%{__ln_s} %{_sysconfdir}/tower-dashboard/settings.py %{buildroot}/%{python2_sitelib}/towerdashboard/settings/settings.py
 
 
 %files
 %doc README.md
 %license LICENSE
 %{python2_sitelib}/*
+%{_datarootdir}/tower-dashboard/wsgi.py
+%config(noreplace) %{_sysconfdir}/tower-dashboard/settings.py
+%exclude %{_sysconfdir}/tower-dashboard/settings.py?
+%exclude %{python2_sitelib}/towerdashboard/settings/settings.py?
 
 
 %changelog

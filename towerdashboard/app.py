@@ -25,6 +25,7 @@ from towerdashboard.jenkins import jenkins
 
 def create_app():
     app = flask.Flask(__name__)
+    app.config.from_object('towerdashboard.settings.settings')
     if os.environ.get('TOWERDASHBOARD_SETTINGS'):
         app.config.from_envvar('TOWERDASHBOARD_SETTINGS')
     if not app.config.get('GITHUB_TOKEN'):
