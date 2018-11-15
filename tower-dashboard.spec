@@ -31,7 +31,10 @@ Ansible Tower QE related.
 %py2_install
 install -d %{buildroot}/%{_datarootdir}/tower-dashboard
 install -d %{buildroot}/%{_sysconfdir}/tower-dashboard
-%{__ln_s} %{python2_sitelib}/towerdashboard/wsgi.py %{buildroot}/%{_datarootdir}/tower-dashboard/wsgi.py
+cp ./towerdashboard/schema.sql %{buildroot}/%{python2_sitelib}/towerdashboard/schema.sql
+cp -r ./towerdashboard/templates %{buildroot}/%{python2_sitelib}/towerdashboard/
+cp -r ./towerdashboard/static %{buildroot}/%{python2_sitelib}/towerdashboard/
+cp ./wsgi.py %{buildroot}/%{_datarootdir}/tower-dashboard/wsgi.py
 cp ./towerdashboard/settings/settings.py %{buildroot}/%{_sysconfdir}/tower-dashboard/
 rm %{buildroot}/%{python2_sitelib}/towerdashboard/settings/settings.py
 %{__ln_s} %{_sysconfdir}/tower-dashboard/settings.py %{buildroot}/%{python2_sitelib}/towerdashboard/settings/settings.py
@@ -45,6 +48,7 @@ rm %{buildroot}/%{python2_sitelib}/towerdashboard/settings/settings.py
 %config(noreplace) %{_sysconfdir}/tower-dashboard/settings.py
 %exclude %{_sysconfdir}/tower-dashboard/settings.py?
 %exclude %{python2_sitelib}/towerdashboard/settings/settings.py?
+%exclude %{_datarootdir}/tower-dashboard/wsgi.py?
 
 
 %changelog
